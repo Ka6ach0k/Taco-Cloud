@@ -4,14 +4,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import tacos.Ingredient.Type;
+import tacos.data.IngredientRepository;
+import tacos.data.OrderRepository;
 import tacos.web.DesignTacoController;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -23,6 +28,13 @@ public class DesignTacoControllerTest {
     private MockMvc mockMvc;
 
     private List<Ingredient> ingredients;
+
+    private Taco design;
+
+    @MockBean
+    private IngredientRepository ingredientRepo;
+    @MockBean
+    private OrderRepository orderRepo;
 
     @BeforeEach
     public void setup() {
@@ -37,6 +49,25 @@ public class DesignTacoControllerTest {
                 new Ingredient("JACK", "Monterrey Jack", Type.CHEESE),
                 new Ingredient("SLSA", "Salsa", Type.SAUCE),
                 new Ingredient("SRCR", "Sour Cream", Type.SAUCE)
+        );
+        when(ingredientRepo.findAll())
+                .thenReturn(ingredients);
+
+        when(ingredientRepo.findById("FLTO"))
+                .thenReturn(Optional.of(new Ingredient("FLTO", "Flour Tortilla", Type.WRAP)));
+        when(ingredientRepo.findById("GRBF"))
+                .thenReturn(Optional.of(new Ingredient("GRBF", "Ground Beef", Type.PROTEIN)));
+        when(ingredientRepo.findById("CHED"))
+                .thenReturn(Optional.of(new Ingredient("CHED", "Cheddar", Type.CHEESE)));
+
+        design = new Taco();
+        design.setName("Test Taco");
+        design.setIngredients(
+                Arrays.asList(
+                        new Ingredient("FLTO", "Flour Tortilla", Type.WRAP),
+                        new Ingredient("GRBF", "Ground Beef", Type.PROTEIN),
+                        new Ingredient("CHED", "Cheddar", Type.CHEESE)
+                )
         );
     }
 
@@ -55,8 +86,8 @@ public class DesignTacoControllerTest {
     @Test
     public void testProcessTaco() throws Exception {
         mockMvc.perform(post("/design")
-                .content("name=Test+Taco&ingredients=FLTO,GRBF,CHED")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                        .content("name=Test+Taco&ingredients=FLTO,GRBF,CHED")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().stringValues("Location", "/orders/current"));
 
