@@ -7,9 +7,10 @@ spring:
     username: postgres
     password: "rXs-0z-4ODZEPmE"
     platform: postgresql
-  sql:
-    init:
-      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
   data:
     jdbc:
       repositories: true

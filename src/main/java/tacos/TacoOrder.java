@@ -19,7 +19,7 @@ public class TacoOrder implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Date placedAt;
@@ -39,13 +39,14 @@ public class TacoOrder implements Serializable {
     @NotBlank(message = "Zip code is required")
     private String deliveryZip;
 
-    @CreditCardNumber(message = "Not a valid credit card number")
+//    @CreditCardNumber(message = "Not a valid credit card number")
     private String ccNumber;
 
     @Pattern(regexp = "^(0[1-9]|1[0-2])([\\/])([2-9][0-9])$",
             message = "Must be formatted MM/YY")
     private String ccExpiration;
-    
+
+    @Column(name = "cc_cvv")
     @Digits(integer = 3, fraction = 0, message = "Invalid CVV")
     private String ccCVV;
 
