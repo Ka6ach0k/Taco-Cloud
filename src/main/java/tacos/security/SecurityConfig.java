@@ -34,7 +34,8 @@ public class SecurityConfig {
         return http
                 .authorizeRequests()
                 .antMatchers("/design", "/orders").hasRole("USER")
-                .anyRequest().permitAll()
+                .antMatchers("/design/**", "/orders/**").hasRole("USER")
+                .antMatchers("/").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
