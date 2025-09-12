@@ -1,9 +1,6 @@
 package tacos.web;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,27 +12,23 @@ import org.springframework.web.bind.support.SessionStatus;
 import tacos.TacoOrder;
 import tacos.User;
 import tacos.data.OrderRepository;
-import tacos.data.UserRepository;
 
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/orders")
 @SessionAttributes("tacoOrder")
-@ConfigurationProperties(prefix = "taco.orders")
 public class OrderController {
 
     private OrderRepository orderRep;
 
-    private int pageSize = 20;
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
+    private OrdersProps props;
 
     @Autowired
-    public OrderController(OrderRepository orderRep, UserRepository userRepo) {
+    public OrderController(OrderRepository orderRep,
+                           OrdersProps props) {
         this.orderRep = orderRep;
+        this.props = props;
     }
 
     @GetMapping("/current")
@@ -79,7 +72,7 @@ public class OrderController {
     public String orderForUser(
             @AuthenticationPrincipal User user, Model model) {
 
-        Pageable pageable = PageRequest.of(0, pageSize);
+        Pageable pageable = PageRequest.of(0, props.getPageSize());
         model.addAttribute("orders",
                 orderRep.findByUserOrderByPlacedAtDesc(user, pageable));
         return "orderList";
