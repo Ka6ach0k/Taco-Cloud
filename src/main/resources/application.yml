@@ -9,7 +9,6 @@ spring:
     platform: postgresql
   jpa:
     hibernate:
-      ddl-auto: create-drop
       database-platform: org.hibernate.dialect.PostgreSQLDialect
   data:
     jdbc:
@@ -17,3 +16,10 @@ spring:
 taco:
   orders:
     pageSize: 10
+
+---
+spring:
+  profiles: dev
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
