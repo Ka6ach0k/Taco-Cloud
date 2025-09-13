@@ -10,6 +10,7 @@ import tacos.Ingredient.Type;
 import tacos.Taco;
 import tacos.TacoOrder;
 import tacos.data.IngredientRepository;
+import tacos.data.TacoRepository;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -21,11 +22,15 @@ import java.util.stream.Collectors;
 @SessionAttributes("tacoOrder")
 public class DesignTacoController {
 
-    IngredientRepository ingredientRepo;
+    private IngredientRepository ingredientRepo;
+
+    private TacoRepository tacoRepo;
 
     @Autowired
-    public DesignTacoController(IngredientRepository ingredientRepo) {
+    public DesignTacoController(IngredientRepository ingredientRepo,
+                                TacoRepository tacoRepo) {
         this.ingredientRepo = ingredientRepo;
+        this.tacoRepo = tacoRepo;
     }
 
     @ModelAttribute
@@ -62,7 +67,8 @@ public class DesignTacoController {
         if (errors.hasErrors())
             return "design";
 
-        tacoOrder.addTaco(taco);
+        Taco saved = tacoRepo.save(taco);
+        tacoOrder.addTaco(saved);
 
         return "redirect:/orders/current";
     }
