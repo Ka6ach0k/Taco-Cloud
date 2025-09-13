@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import tacos.Ingredient.Type;
 import tacos.Ingredient;
 
 import java.util.Optional;
 
 @SpringBootTest
+@ActiveProfiles("dev")
 public class IngredientRepositoryTest {
 
     @Autowired
