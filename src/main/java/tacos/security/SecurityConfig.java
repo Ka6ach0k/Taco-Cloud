@@ -43,6 +43,8 @@ public class SecurityConfig {
                 .logout()
                 .logoutSuccessUrl("/")
                 .and()
+                .csrf().ignoringAntMatchers("/api/**") // Для работы API без csrf-токена
+                .and()
                 .build();
     }
 }
