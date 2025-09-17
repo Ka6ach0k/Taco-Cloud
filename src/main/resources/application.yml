@@ -11,6 +11,8 @@ spring:
     hibernate:
       database-platform: org.hibernate.dialect.PostgreSQLDialect
   data:
+    rest:
+      base-path: /data-api
     jdbc:
       repositories: true
 taco:
