@@ -70,7 +70,7 @@ public class DevelopmentConfig {
                 tacoRepo.save(taco3);
 
                 userRepo.save(new User(
-                        "user",encoder.encode("user"), "Test_User", "Street",
+                        "user", encoder.encode("user"), "Test_User", "Street",
                         "Penza", "Pn", "123456", "+79999999999"
                 ));
             }
