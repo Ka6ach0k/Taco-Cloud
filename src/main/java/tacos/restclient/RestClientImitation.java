@@ -2,22 +2,15 @@ package tacos.restclient;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 import tacos.Ingredient;
 import tacos.data.IngredientRepository;
 
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.SimpleTimeZone;
 
 @Slf4j
 @Controller
@@ -44,6 +37,10 @@ public class RestClientImitation {
         test_getIngredientById(testIngredientId);
         test_updateIngredient(testIngredient);
         test_getIngredientById(testIngredientId);
+        test_deleteIngredient(testIngredient);
+        test_getIngredientById(testIngredient.getId());
+        postIngredient(testIngredient);
+        test_getIngredientById(testIngredient.getId());
 
         return "Empty";
     }
@@ -68,19 +65,36 @@ public class RestClientImitation {
         log.info("-----------------------------------------");
     }
 
+    public void test_deleteIngredient(Ingredient ingredient) {
+        log.info("----------Test_deleteIngredient----------");
+
+        deleteIngredient(ingredient);
+
+        log.info("Ingredient delete in database");
+        log.info("----------------------------------------");
+    }
+
     public Optional<Ingredient> getIngredientById(String ingredientId) {
         try {
             Ingredient result = rest.getForObject(urlApi + "ingredients/{id}",
                     Ingredient.class, ingredientId);
             return Optional.ofNullable(result);
         } catch (HttpClientErrorException.NotFound errorException) {
-             log.info("Not found ingredient");
-             return Optional.empty();
+            log.info("Not found ingredient");
+            return Optional.empty();
         }
     }
 
     public void updateIngredient(Ingredient ingredient) {
         rest.put(urlApi + "ingredients/{id}",
                 ingredient, ingredient.getId());
+    }
+
+    public void deleteIngredient(Ingredient ingredient) {
+        rest.delete(urlApi + "ingredients/{id}", ingredient.getId());
+    }
+
+    public Ingredient postIngredient(Ingredient ingredient) {
+        return rest.postForObject(urlApi + "ingredients", ingredient, Ingredient.class);
     }
 }
