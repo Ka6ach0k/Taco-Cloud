@@ -12,7 +12,7 @@ spring:
       database-platform: org.hibernate.dialect.PostgreSQLDialect
   data:
     rest:
-      base-path: /data-api
+      base-path: /api
     jdbc:
       repositories: true
 taco:
