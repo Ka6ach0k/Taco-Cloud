@@ -1,14 +1,16 @@
 spring:
   application:
     name: auth-server
-server:
-  port: 9090
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://192.168.0.194:5432/taco_cloud
-    username: postgres
-    password: "rXs-0z-4ODZEPmE"
-    platform: postgresql
+      driver-class-name: org.postgresql.Driver
+      url: jdbc:postgresql://192.168.0.194:5432/taco_cloud
+      username: postgres
+      password: "rXs-0z-4ODZEPmE"
+      platform: postgresql
   jpa:
     hibernate:
       database-platform: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: create-drop
+
+server:
+  port: 9000
