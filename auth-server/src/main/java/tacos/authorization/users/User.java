@@ -11,10 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 @Data
-@Entity
+@Entity(name = "user_auth")
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class User implements UserDetails {
