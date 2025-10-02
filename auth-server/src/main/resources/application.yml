@@ -14,3 +14,13 @@ spring:
 
 server:
   port: 9000
+logging:
+  level:
+    org.springframework.security: TRACE
+    org.springframework.security.oauth2: TRACE
+    org.springframework.security.oauth2.server.authorization: TRACE
+    org.springframework.security.oauth2.core: TRACE
+    org.springframework.security.oauth2.core.endpoint: TRACE
+    org.springframework.security.oauth2.core.http.converter: TRACE
+    org.springframework.security.web: TRACE
+    root: INFO
